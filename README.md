@@ -26,41 +26,49 @@ This project builds a **Machine Learning model** to:
 ## 🏗️ Project Structure
 
 ```
-gender-counter/
+Gender_Classification/
 │
-├── data/
-│   ├── train/
-│   ├── val/
+├── dataset/              │
+├── model/
+│   └── model.pth
 │
-├── models/
-│   └── gender_model.pth
+├── inference.py
+├── predict.py
 │
-├── src/
-│   ├── train.py
-│   ├── predict.py
-│   ├── dataset.py
-│   └── model.py
-│
-├── utils/
-│   └── face_detect.py
-│
+├── model_card.pdf
 ├── requirements.txt
 ├── README.md
-└── main.py
+└── .gitignore
 ```
 
 ---
 
 ## 📊 Dataset
 
-Use this dataset:
+This project uses the **UTKFace Dataset**.
 
-👉 https://www.kaggle.com/datasets/jangedoo/utkface-new
+🔗 Download dataset:
+[https://www.kaggle.com/datasets/jangedoo/utkface-new](https://www.kaggle.com/datasets/jangedoo/utkface-new)
 
-### Dataset Info:
+### 📁 Dataset Setup
 
-* Contains face images labeled with age, gender, ethnicity
-* Gender:
+After downloading, extract and place it as:
+
+```
+dataset/
+ ├── Training/
+ ├── Validation/
+```
+
+⚠️ Note:
+
+* The dataset is **not included** in this repository due to size limitations.
+* Please download it manually from the link above.
+
+### 📌 Dataset Details
+
+* Face images labeled with age, gender, ethnicity
+* Gender labels:
 
   * `0 → Male`
   * `1 → Female`
@@ -69,7 +77,7 @@ Use this dataset:
 
 ## ⚙️ Setup Instructions
 
-### 1️⃣ Clone Repo
+### 1️⃣ Clone Repository
 
 ```bash
 git clone https://github.com/vaishnavijagtap02/Gender_Classification.git
@@ -128,19 +136,27 @@ Pillow
 ## 🏋️ Training
 
 ```bash
-python src/train.py
+python train.py
 ```
 
 Output:
 
-* `gender_model.pth`
+* `model.pth`
 
 ---
 
 ## 🔍 Inference (Prediction)
 
+Make sure the model file exists at:
+
+```
+models/model.pth
+```
+
+Run:
+
 ```bash
-python main.py --image sample.jpg
+python inference.py --image sample.jpg
 ```
 
 ### Output Example:
@@ -148,6 +164,17 @@ python main.py --image sample.jpg
 ```
 Male: 3
 Female: 2
+```
+
+---
+
+## 🧠 Model Loading
+
+```python
+import torch
+
+model = torch.load("models/model.pth", map_location=torch.device('cpu'))
+model.eval()
 ```
 
 ---
@@ -200,11 +227,11 @@ Female: 2
 ## 💡 Future Improvements
 
 * Multi-face detection improvements
-* Real-time webcam support
+  n- Real-time webcam support
 * Better bias mitigation
 
 ---
 
 ## 🙌 Author
 
-Vaishnavi Jagtap
+**Vaishnavi Jagtap**
