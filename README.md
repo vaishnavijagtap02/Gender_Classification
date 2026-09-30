@@ -28,14 +28,16 @@ This project builds a **Machine Learning model** to:
 ```
 Gender_Classification/
 │
-├── dataset/              │
-├── model/
-│   └── model.pth
+├── dataset/              
+├── Team_40_GenderClassification/
+│   ├── model/
+│   │   └── model.pth
+│   ├── model_card.pdf
+│   ├── inference.py
+│   ├── predict.py
+│   └── README.md
 │
-├── inference.py
-├── predict.py
-│
-├── model_card.pdf
+├── train.py
 ├── requirements.txt
 ├── README.md
 └── .gitignore
@@ -126,7 +128,7 @@ Pillow
 
 ## 🧠 Model Architecture
 
-* Pretrained: `ResNet18`
+* Pretrained: `MobileNetV3-Small`
 * Modified final layer → Binary classification
 * Loss Function: CrossEntropyLoss
 * Optimizer: Adam
@@ -150,13 +152,13 @@ Output:
 Make sure the model file exists at:
 
 ```
-models/model.pth
+Team_40_GenderClassification/model/model.pth
 ```
 
 Run:
 
 ```bash
-python inference.py --image sample.jpg
+python Team_40_GenderClassification/inference.py --image sample.jpg
 ```
 
 ### Output Example:
@@ -172,8 +174,11 @@ Female: 2
 
 ```python
 import torch
+from torchvision import models
 
-model = torch.load("models/model.pth", map_location=torch.device('cpu'))
+model = models.mobilenet_v3_small(weights=None)
+model.classifier[3] = torch.nn.Linear(model.classifier[3].in_features, 2)
+model.load_state_dict(torch.load("Team_40_GenderClassification/model/model.pth", map_location=torch.device('cpu')))
 model.eval()
 ```
 
@@ -197,7 +202,7 @@ model.eval()
 
 ### Architecture
 
-* ResNet18 (Modified)
+* MobileNetV3-Small (Modified)
 
 ### Parameters
 

@@ -37,6 +37,8 @@ class GenderModel:
                 
                 # FINAL SUBMISSION MAPPING:
                 # Based on requirements: 0 = Male, 1 = Female
+                # Flip labels because training mapping was {'female': 0, 'male': 1}
+                predicted_class = 1 - predicted_class
                 return predicted_class.item(), conf.item()
                     
         except Exception as e:
@@ -47,3 +49,16 @@ _model = GenderModel()
 
 def predict(image_path):
     return _model.predict_one(image_path)
+
+if __name__ == "__main__":
+    import argparse
+    parser = argparse.ArgumentParser(description="Gender Classification Inference")
+    parser.add_argument("--image", type=str, required=True, help="Path to the image")
+    args = parser.parse_args()
+    
+    if not os.path.exists(args.image):
+        print(f"❌ File not found: {args.image}")
+    else:
+        label, confidence = predict(args.image)
+        gender = "Male" if label == 0 else "Female"
+        print(f"{gender}: {confidence:.4f}")
